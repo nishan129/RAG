@@ -63,4 +63,4 @@ def run(rows: list[dict]) -> list[dict]:
         show_progress=False,
     )
 
-    return results
+    return results.to_pandas().to_dict(orient="records")
