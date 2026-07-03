@@ -45,7 +45,7 @@ class Golden(BaseModel):
         return self
     
 
-def load_golden(path: str | Path) -> list[Golden]:
+def load_goldens(path: str | Path) -> list[Golden]:
     """
     Load and validate seed_questions.yaml.
 
