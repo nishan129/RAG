@@ -45,7 +45,7 @@ class QueryCacheService:
         raw: str | dict[str, Any] = question.strip()
         if cache_context is not None:
             raw = {'question': question.strip(), 'context':cache_context}
-        return self._key("rag_answer", json.dumps(raw, sort_key=True) if isinstance else ok)
+        return self._key("rag_answer", json.dumps(raw, sort_key=True) if isinstance(raw, dict) else raw)
     
     def sql_gen_key(self, question: str) -> str:
         return self._key("sql_gen", question.strip())

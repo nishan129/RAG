@@ -84,3 +84,7 @@ class QueryRequest(BaseModel):
 
         return v
     
+class RetrievedChunk(BaseModel):
+    text: str
+    source: str
+    score: float = 0.0
