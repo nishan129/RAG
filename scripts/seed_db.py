@@ -175,8 +175,18 @@ def seed_users(conn: psycopg2.extensions.connection) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Seed database (Lesson 0 - no doc in).")
-    parser.parse_args()
+    parser = argparse.ArgumentParser(description="Seed database + ingest documents")
+    parser.add_argument(
+        "--no-ingest", action="store_true",
+        help="RUN migrations + user only; skip vector-store ingestion",
+    )
+    parser.add_argument(
+        "--no-sample", default="150",
+        help="Number of noisy docs to sample (default 150). Use 0 or 'all'",
+    )
+
+    args = parser.parse_args()
+
 
     logger.info("Connecting to database...")
     conn = psycopg2.connect(DATABASE_URL)
@@ -188,6 +198,19 @@ def main():
     conn.close()
     logger.info("DB seeding done.")
 
+    if args.no_ingest:
+        logger.info("--no-ingest set; skipping doc ingestion.")
+        return
+    
+    # Parse nise-sample arg (int or 'all')
+    noise_arg: int | str = args.noise_sample
+    if noise_arg != "all":
+        try:
+            noise_arg = int(noise_arg)
+
+        except ValueError:
+            raise SystemExit(f"--noise-sample must be int or 'all', got {noise_arg!r}")
+    seed_docs(noise_sample_size=noise_arg)
     conn.close()
     logger.info("Database seeding done.")
     logger.info("Note: document ingestion is added in Lesson 1 (lesson-1-native)")
