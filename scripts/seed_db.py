@@ -98,6 +98,21 @@ def seed_docs(noise_sample_size: int | str = 150) -> dict:
         if counters['chunks'] > 0 and idx == len(true_files):
             logger.info("✅ All {} true (signal) files done", len(true_files))
 
+    for jdx, src in enumerate(noisy_files, start=1):
+        idx = len(true_files) + jdx
+        _ingest_one(processor, src, idx, total, counters,embed_texts, upsert_chunks, RetrievedChunk)
+        
+
+    elsaped = time.time()
+    logger.info("="*60)
+    logger.info("INGESTION COMPLETE in {:.1f} min",elsaped / 60)
+    logger.info("   true_data ingested   : {}", counters['true_ingested'])
+    logger.info("   noisy_data ingested : {}", counters['noisy_ingested'])
+    logger.info("   failed (skipped)       : {}", counters['failed'])
+    logger.info("   total chunks upserted: {}", counters['chunks'])
+    logger.info("="*60)
+
+    return counters
 
         
 
