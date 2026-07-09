@@ -10,7 +10,7 @@ class ChatRequest(BaseModel):
         max_length=2000,
         description="User message to the AI assistant"
     )
-    @field_validator("message")
+    @field_validator("message",check_fields=False)
     @classmethod
     def validate_message_content(cls, v: str) -> str:
         v = v.strip()
@@ -62,7 +62,7 @@ class QueryRequest(BaseModel):
     enable_crag: bool = True
     enable_self_reflective: bool = False
 
-    @field_validator("question")
+    @field_validator("question",check_fields=False)
     @classmethod
     def validate_question_content(cls, v: str) -> str:
         v = v.strip()
