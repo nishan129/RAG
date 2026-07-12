@@ -5,12 +5,12 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     openai_api_key: str = ""
-    groq_api_key: str = ""
     llm_model_answer: str = "llama-3.3-70b-versatile"
     llm_model_grader: str = "llama-3.3-70b-versatile"
     embedding_model: str = "all-MiniLM-L6-v2"
+    groq_api_key: str = "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"
     
-    qdrant_url: str = ""
+    qdrant_url: str = "http://localhost:6333/"
     qdrant_collection: str = "documents"
 
     database_url: str = "postgresql://postgres:postgres@localhost:5432/adv_rag"
@@ -30,7 +30,6 @@ class Settings(BaseSettings):
 
     tavily_api_key: str = "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"
 
-    groq_api_key: str = ""
 
     jwt_secret: str = ""
     jwt_expiration_minutes: int = 60

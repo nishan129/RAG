@@ -28,7 +28,7 @@ async def _ping_qdrant() -> bool:
         from qdrant_client import QdrantClient
 
         client = QdrantClient(url=settings.qdrant_url, timeout=2)
-        client.get_collection()
+        client.get_collections()
         return True
     
     except Exception as e:
