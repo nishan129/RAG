@@ -5,9 +5,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     openai_api_key: str = ""
-    llm_model_answer: str = "gpt-4o"
-    llm_model_grader: str = "gpt-4o-mini"
-    embedding_model: str = "text-embedding-3-small"
+    groq_api_key: str = ""
+    llm_model_answer: str = "llama-3.3-70b-versatile"
+    llm_model_grader: str = "llama-3.3-70b-versatile"
+    embedding_model: str = "all-MiniLM-L6-v2"
     
     qdrant_url: str = ""
     qdrant_collection: str = "documents"

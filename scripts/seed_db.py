@@ -49,7 +49,7 @@ def _select_corpus(noise_sample_size: int | str) -> tuple[list[Path], list[Path]
         and p.name != ".gitkeep"
     ]
     if lagacy_flie:
-        logger.info("Found {} legacy top-level docs (treating as true signal)")
+        logger.info("Found {} legacy top-level docs (treating as true signal)",lagacy_flie)
 
     true_files = lagacy_flie + true_files
 
@@ -103,9 +103,9 @@ def seed_docs(noise_sample_size: int | str = 150) -> dict:
         _ingest_one(processor, src, idx, total, counters,embed_texts, upsert_chunks, RetrievedChunk)
         
 
-    elsaped = time.time()
+    elsaped = time.time() - t0
     logger.info("="*60)
-    logger.info("INGESTION COMPLETE in {:.1f} min",elsaped / 60)
+    logger.info("INGESTION COMPLETE in {:.1f} min", elsaped / 60)
     logger.info("   true_data ingested   : {}", counters['true_ingested'])
     logger.info("   noisy_data ingested : {}", counters['noisy_ingested'])
     logger.info("   failed (skipped)       : {}", counters['failed'])
@@ -123,7 +123,7 @@ def _ingest_one(processor, src:Path, idx:int, total:int, counters:dict,
     try:
         chunks_meta = processor.process_document(str(src))
         if not chunks_meta:
-            logger.warning("[{}/{}] {} {} -> 0 chunks (skipped)", idx, total, label)
+            logger.warning("[{}/{}] {} -> 0 chunks (skipped)", idx, total, label)
             counters['failed'] += 1
             return
         chunks = [RetrievedChunk(text=c['text'], source=c['source']) for c in chunks_meta] 
@@ -136,7 +136,7 @@ def _ingest_one(processor, src:Path, idx:int, total:int, counters:dict,
             logger.info(" [{}/{}] progress - {} chunks so far", idx, total,counters['chunks'])
 
     except Exception as e:
-        logger.warning("[{}/{}] FAILED {} {}: {}", idx, total, label, src.name)
+        logger.warning("[{}/{}] FAILED {} {} {}", idx, total, label, src.name, str(e))
         counters['failed'] += 1   
 
 
@@ -178,13 +178,12 @@ def main():
     parser = argparse.ArgumentParser(description="Seed database + ingest documents")
     parser.add_argument(
         "--no-ingest", action="store_true",
-        help="RUN migrations + user only; skip vector-store ingestion",
+        help="Run migrations + users only; skip vector-store ingestion",
     )
     parser.add_argument(
-        "--no-sample", default="150",
-        help="Number of noisy docs to sample (default 150). Use 0 or 'all'",
+        "--noise-sample", default="150",
+        help="Number of noisy docs to sample (default 150). Use 0 or 'all'.",
     )
-
     args = parser.parse_args()
 
 
