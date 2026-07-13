@@ -49,7 +49,7 @@ class ChatResponse(BaseModel):
     metadata: ResponseMetadata = Field(default_factory=ResponseMetadata)
 
 class QueryRequest(BaseModel):
-    questions: str = Field(
+    question: str = Field(
         ...,
         min_length=1,
         max_length=2000,
@@ -59,7 +59,7 @@ class QueryRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=50)
     enable_hyde: bool = False
     search_mode: Literal["dense", "sparse", "hybrid"] = "dense"
-    enable_crag: bool = True
+    enable_crag: bool = False
     enable_self_reflective: bool = False
 
     @field_validator("question",check_fields=False)

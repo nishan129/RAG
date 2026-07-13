@@ -27,7 +27,7 @@ def _generate(question: str, chunks: list[RetrievedChunk]) -> ChatResponse:
     user_msg = f"{spotlighted}\n\nQuestion: {question}"
     raw = generate(system, user_msg)['text']
     chunk_previews = [
-        RetrievedChunkPreview(text=c.text, source=c.source, score=c.score) for c in raw
+        RetrievedChunkPreview(text=c.text, source=c.source, score=c.score) for c in chunks
     ]
 
     return ChatResponse(

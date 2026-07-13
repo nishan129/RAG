@@ -12,5 +12,5 @@ async def query(
     body: QueryRequest,
     user: User = Depends(get_current_user)
 ) -> ChatResponse:
-    return run_rag(body.questions, flags={'top_k': body.top_k})
+    return run_rag(body.question, flags={'top_k': body.top_k})
 

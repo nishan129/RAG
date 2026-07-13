@@ -50,7 +50,7 @@ async def _ping_openai() -> bool:
     try:
         from openai import AsyncOpenAI
 
-        client = AsyncOpenAI(api_key=settings.open_ai_api_key)
+        client = AsyncOpenAI(api_key=settings.groq_api_key,  base_url="https://api.groq.com/openai/v1")
         await client.models.list()
         return True
     except Exception as e:
