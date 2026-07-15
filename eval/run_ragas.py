@@ -19,7 +19,7 @@ def main() -> None:
     ap.add_argument(
         "--profile",
         required=True,
-        choices=list(PROFILES,keys()),
+        choices=list(PROFILES.keys()),
         help="Flag profile to evaluate",
     )
 

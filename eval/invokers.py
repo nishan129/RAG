@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import Any
+from app.config import settings
+from app.models import ChatResponse, RetrievedChunk
+from app.services.rag_service import run_rag_with_trace_no_cache
+
 
 class SkippedIntent(Exception):
     pass
@@ -10,7 +14,7 @@ class Invoker(ABC):
     """Abstract base class for invokers."""
 
     @abstractmethod
-    def invoke(self, question:str, flags:dict, intent: str) -> tuple[Any, list]:
+    def invoke(self, question:str, flags:dict, intent: str) -> tuple[ChatResponse, list[RetrievedChunk]]:
         ...
 
     
@@ -19,8 +23,11 @@ class ServiceInvoker(Invoker):
 
     def invoke(
             self, question: str, flags:dict, intent: str
-    )-> tuple[Any, list]:
-        raise NotImplementedError(
-            "RAG service is not implemented in Lesson 0."
-            "Switch to the lesson-1-naive branch to enable retrieval-based eval"
-        )
+    )-> tuple[ChatResponse, list[RetrievedChunk]]:
+        if intent not in self.SUPPORTED_INTENTS:
+            raise SkippedIntent(f"inten={intent} not supported in service mode")
+        
+        if intent == "web_fallback" and not settings.tavily_api_key:
+            raise SkippedIntent("tavily_unset: TAVILY_API_KEY not configured")
+        
+        return run_rag_with_trace_no_cache(question,flags)

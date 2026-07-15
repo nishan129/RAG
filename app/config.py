@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     llm_model_answer: str = "llama-3.3-70b-versatile"
     llm_model_grader: str = "llama-3.3-70b-versatile"
     embedding_model: str = "all-MiniLM-L6-v2"
-    groq_api_key: str = ""
+    groq_api_key: str = "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"
     
     qdrant_url: str = "http://localhost:6333/"
     qdrant_collection: str = "documents"

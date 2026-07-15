@@ -4,15 +4,16 @@ import os
 
 from datasets import Dataset
 from langchain_openai import OpenAIEmbeddings
-from ragas.evaluation import  evaluate
+from ragas import evaluate
 from ragas.embeddings import LangchainEmbeddingsWrapper
-# from ragas.llms import llm_factory
+from ragas.llms import llm_factory
 from ragas.metrics import (
     answer_relevancy,
     context_precision,
     context_recall,
-    faithfulness
+    faithfulness,
 )
+
 
 from app.config import settings
 

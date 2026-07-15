@@ -22,6 +22,7 @@ def aggregate(rows: list[dict]) -> dict:
     out['forbidden_violations'] = sum(
         1 for r in rows if not r.get("forbidden_check", {}).get("passed", True)
     )
+    return out
 
 
 def print_table(payload: dict) -> None:
